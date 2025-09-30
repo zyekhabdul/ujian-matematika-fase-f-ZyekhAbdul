@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Belajar Matematika</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .nav-tabs {
+            border-bottom: none;
+            margin-bottom: 25px;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--dark-color);
+            font-weight: 600;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            padding: 12px 25px;
+            margin-right: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .tab-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .definition-box {
+            background-color: rgba(76, 201, 240, 0.15);
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 30px;
+        }
+        
+        .definition-box h3 {
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .question-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .question-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-answer {
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-answer:hover {
+            background-color: #3aa8c9;
+            transform: scale(1.05);
+        }
+        
+        .answer-box {
+            display: none;
+            background-color: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+        }
+        
+        .answer-box.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center">
+            <h1><i class="bi bi-calculator-fill me-2"></i>Portal Belajar Matematika</h1>
+            <p class="lead">Pelajari Bilangan, Aljabar, Fungsi, dan Geometri dengan Soal Interaktif</p>
+        </div>
+        
+        <ul class="nav nav-tabs" id="mathTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="bilangan-tab" data-bs-toggle="tab" data-bs-target="#bilangan" type="button" role="tab" aria-controls="bilangan" aria-selected="true">
+                    <i class="bi bi-123 me-2"></i>Bilangan
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="aljabar-tab" data-bs-toggle="tab" data-bs-target="#aljabar" type="button" role="tab" aria-controls="aljabar" aria-selected="false">
+                    <i class="bi bi-x-square me-2"></i>Aljabar
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fungsi-tab" data-bs-toggle="tab" data-bs-target="#fungsi" type="button" role="tab" aria-controls="fungsi" aria-selected="false">
+                    <i class="bi bi-graph-up me-2"></i>Fungsi
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="geometri-tab" data-bs-toggle="tab" data-bs-target="#geometri" type="button" role="tab" aria-controls="geometri" aria-selected="false">
+                    <i class="bi bi-triangle me-2"></i>Geometri
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="mathTabsContent">
+            <!-- Bilangan Tab -->
+            <div class="tab-pane fade show active" id="bilangan" role="tabpanel" aria-labelledby="bilangan-tab">
+                <div class="definition-box">
+                    <h3><i class="bi bi-bookmark-star me-2"></i>Definisi Bilangan</h3>
+                    <p>Bilangan adalah konsep matematika yang digunakan untuk menghitung, mengukur, dan melabeli objek. Bilangan dapat berupa bilangan asli, bulat, rasional, irasional, real, atau kompleks.</p>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h4>Hasil dari 15 + 27 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5vG7L9e.png" alt="Penjumlahan Bilangan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer1')">Lihat Jawaban</button>
+                    <div id="answer1" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>15 + 27 = 42</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h4>Hasil dari 8 × 9 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Perkalian Bilangan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer2')">Lihat Jawaban</button>
+                    <div id="answer2" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>8 × 9 = 72</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h4>Hasil dari 144 ÷ 12 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Pembagian Bilangan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer3')">Lihat Jawaban</button>
+                    <div id="answer3" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>144 ÷ 12 = 12</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h4>FPB dari 24 dan 36 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Faktor Persekutuan Terbesar" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer4')">Lihat Jawaban</button>
+                    <div id="answer4" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>FPB 24 dan 36 adalah 12</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <h4>KPK dari 8 dan 12 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Kelipatan Persekutuan Terkecil" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer5')">Lihat Jawaban</button>
+                    <div id="answer5" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>KPK 8 dan 12 adalah 24</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <h4>Hasil dari 3<sup>4</sup> adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5dXeK0F.png" alt="Perpangkatan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer6')">Lihat Jawaban</button>
+                    <div id="answer6" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>3<sup>4</sup> = 3 × 3 × 3 × 3 = 81</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <h4>Akar kuadrat dari 64 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/3kLd7xG.png" alt="Akar Kuadrat" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer7')">Lihat Jawaban</button>
+                    <div id="answer7" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>√64 = 8</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">8</div>
+                        <h4>Ubah pecahan 3/4 menjadi desimal...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9kLc7dH.png" alt="Pecahan ke Desimal" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer8')">Lihat Jawaban</button>
+                    <div id="answer8" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>3/4 = 0,75</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">9</div>
+                        <h4>Hasil dari 25% dari 200 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8jKd9fL.png" alt="Persentase" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer9')">Lihat Jawaban</button>
+                    <div id="answer9" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>25% × 200 = 50</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">10</div>
+                        <h4>Urutkan bilangan berikut dari terkecil: 0,5; 1/2; 25%; 0,45</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7jKd3fL.png" alt="Mengurutkan Bilangan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer10')">Lihat Jawaban</button>
+                    <div id="answer10" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>0,45; 25%; 0,5; 1/2</p>
+                        <p>Karena: 0,45 = 45/100, 25% = 25/100, 0,5 = 50/100, 1/2 = 50/100</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aljabar Tab -->
+            <div class="tab-pane fade" id="aljabar" role="tabpanel" aria-labelledby="aljabar-tab">
+                <div class="definition-box">
+                    <h3><i class="bi bi-bookmark-star me-2"></i>Definisi Aljabar</h3>
+                    <p>Aljabar adalah cabang matematika yang mempelajari simbol dan aturan untuk memanipulasi simbol tersebut. Aljabar digunakan untuk menyelesaikan persamaan dan memodelkan hubungan antar besaran.</p>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h4>Sederhanakan: 3x + 5x - 2x</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5dXeK0F.png" alt="Penyederhanaan Aljabar" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer11')">Lihat Jawaban</button>
+                    <div id="answer11" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>3x + 5x - 2x = (3 + 5 - 2)x = 6x</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h4>Nilai x dari persamaan 2x + 5 = 13 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Persamaan Linear" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer12')">Lihat Jawaban</button>
+                    <div id="answer12" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>2x + 5 = 13<br>
+                        2x = 13 - 5<br>
+                        2x = 8<br>
+                        x = 8 / 2<br>
+                        x = 4</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h4>Hasil dari (2x + 3)(x - 4) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Perkalian Aljabar" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer13')">Lihat Jawaban</button>
+                    <div id="answer13" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>(2x + 3)(x - 4) = 2x(x) + 2x(-4) + 3(x) + 3(-4)<br>
+                        = 2x² - 8x + 3x - 12<br>
+                        = 2x² - 5x - 12</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h4>Faktorkan: x² - 9</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Pemfaktoran" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer14')">Lihat Jawaban</button>
+                    <div id="answer14" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>x² - 9 = (x + 3)(x - 3)</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <h4>Selesaikan persamaan kuadrat: x² - 5x + 6 = 0</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Persamaan Kuadrat" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer15')">Lihat Jawaban</button>
+                    <div id="answer15" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>x² - 5x + 6 = 0<br>
+                        (x - 2)(x - 3) = 0<br>
+                        x - 2 = 0 atau x - 3 = 0<br>
+                        x = 2 atau x = 3</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <h4>Nilai dari 2³ + 3² adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5vG7L9e.png" alt="Perpangkatan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer16')">Lihat Jawaban</button>
+                    <div id="answer16" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>2³ + 3² = 8 + 9 = 17</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <h4>Jika x = 3 dan y = 2, maka nilai dari 2x² - 3y adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Substitusi Nilai" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer17')">Lihat Jawaban</button>
+                    <div id="answer17" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>2x² - 3y = 2(3)² - 3(2) = 2(9) - 6 = 18 - 6 = 12</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">8</div>
+                        <h4>Sederhanakan: (3a²b)³</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Perpangkatan Aljabar" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer18')">Lihat Jawaban</button>
+                    <div id="answer18" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>(3a²b)³ = 3³ × (a²)³ × b³ = 27 × a⁶ × b³ = 27a⁶b³</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">9</div>
+                        <h4>Selesaikan: 5x - 2 > 3x + 8</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Pertidaksamaan" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer19')">Lihat Jawaban</button>
+                    <div id="answer19" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>5x - 2 > 3x + 8<br>
+                        5x - 3x > 8 + 2<br>
+                        2x > 10<br>
+                        x > 5</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">10</div>
+                        <h4>Hasil dari √(16x⁴) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt "Akar dan Pangkat" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer20')">Lihat Jawaban</button>
+                    <div id="answer20" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>√(16x⁴) = √16 × √x⁴ = 4 × x² = 4x²</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fungsi Tab -->
+            <div class="tab-pane fade" id="fungsi" role="tabpanel" aria-labelledby="fungsi-tab">
+                <div class="definition-box">
+                    <h3><i class="bi bi-bookmark-star me-2"></i>Definisi Fungsi</h3>
+                    <p>Fungsi adalah hubungan antara dua himpunan yang memasangkan setiap anggota himpunan pertama (domain) dengan tepat satu anggota himpunan kedua (kodomain). Fungsi dapat dinyatakan sebagai rumus, grafik, atau tabel.</p>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h4>Diketahui f(x) = 2x + 3. Nilai f(4) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5dXeK0F.png" alt="Fungsi Linear" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer21')">Lihat Jawaban</button>
+                    <div id="answer21" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>f(4) = 2(4) + 3 = 8 + 3 = 11</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h4>Jika g(x) = x² - 5x + 6, maka g(3) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Fungsi Kuadrat" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer22')">Lihat Jawaban</button>
+                    <div id="answer22" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>g(3) = (3)² - 5(3) + 6 = 9 - 15 + 6 = 0</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h4>Domain dari fungsi f(x) = 1/(x - 2) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Domain Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer23')">Lihat Jawaban</button>
+                    <div id="answer23" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Penyebut tidak boleh nol, sehingga x - 2 ≠ 0 → x ≠ 2<br>
+                        Jadi domainnya adalah {x | x ≠ 2, x ∈ R}</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h4>Jika f(x) = 3x - 1 dan g(x) = 2x + 5, maka (f + g)(x) adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Operasi Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer24')">Lihat Jawaban</button>
+                    <div id="answer24" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>(f + g)(x) = f(x) + g(x) = (3x - 1) + (2x + 5) = 5x + 4</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <h4>Range dari fungsi f(x) = x² adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Range Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer25')">Lihat Jawaban</button>
+                    <div id="answer25" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Karena x² selalu non-negatif, maka range-nya adalah {y | y ≥ 0, y ∈ R}</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <h4>Jika f(x) = 2x + 3, maka invers fungsi f adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5vG7L9e.png" alt="Invers Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer26')">Lihat Jawaban</button>
+                    <div id="answer26" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>y = 2x + 3<br>
+                        x = 2y + 3<br>
+                        x - 3 = 2y<br>
+                        y = (x - 3)/2<br>
+                        Jadi f⁻¹(x) = (x - 3)/2</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <h4>Komposisi fungsi (f o g)(x) jika f(x) = x² dan g(x) = x + 1 adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Komposisi Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer27')">Lihat Jawaban</button>
+                    <div id="answer27" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>(f o g)(x) = f(g(x)) = f(x + 1) = (x + 1)² = x² + 2x + 1</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">8</div>
+                        <h4>Grafik fungsi f(x) = |x| berbentuk...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Fungsi Nilai Mutlak" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer28')">Lihat Jawaban</button>
+                    <div id="answer28" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Grafik fungsi nilai mutlak berbentuk V dengan titik puncak di (0,0)</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">9</div>
+                        <h4>Fungsi f(x) = 3x - 2 adalah fungsi...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Jenis Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer29')">Lihat Jawaban</button>
+                    <div id="answer29" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Fungsi linear karena berbentuk f(x) = mx + c</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">10</div>
+                        <h4>Jika f(x) = 2x - 5 dan f(a) = 7, maka nilai a adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Nilai Fungsi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer30')">Lihat Jawaban</button>
+                    <div id="answer30" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>f(a) = 2a - 5 = 7<br>
+                        2a = 7 + 5<br>
+                        2a = 12<br>
+                        a = 6</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Geometri Tab -->
+            <div class="tab-pane fade" id="geometri" role="tabpanel" aria-labelledby="geometri-tab">
+                <div class="definition-box">
+                    <h3><i class="bi bi-bookmark-star me-2"></i>Definisi Geometri</h3>
+                    <p>Geometri adalah cabang matematika yang mempelajari bentuk, ukuran, sifat ruang, dan hubungan antar objek dalam ruang. Geometri mencakup bidang datar, ruang, dan transformasi geometri.</p>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h4>Luas persegi dengan sisi 5 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5dXeK0F.png" alt="Luas Persegi" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer31')">Lihat Jawaban</button>
+                    <div id="answer31" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Luas = sisi × sisi = 5 cm × 5 cm = 25 cm²</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h4>Keliling lingkaran dengan jari-jari 7 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Keliling Lingkaran" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer32')">Lihat Jawaban</button>
+                    <div id="answer32" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Keliling = 2 × π × r = 2 × 22/7 × 7 = 44 cm</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h4>Volume kubus dengan rusuk 4 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Volume Kubus" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer33')">Lihat Jawaban</button>
+                    <div id="answer33" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Volume = rusuk³ = 4 cm × 4 cm × 4 cm = 64 cm³</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h4>Luas segitiga dengan alas 10 cm dan tinggi 8 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Luas Segitiga" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer34')">Lihat Jawaban</button>
+                    <div id="answer34" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Luas = ½ × alas × tinggi = ½ × 10 cm × 8 cm = 40 cm²</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <h4>Pythagoras: Jika sisi tegak 6 cm dan sisi alas 8 cm, maka sisi miring adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Teorema Pythagoras" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer35')">Lihat Jawaban</button>
+                    <div id="answer35" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Sisi miring² = 6² + 8² = 36 + 64 = 100<br>
+                        Sisi miring = √100 = 10 cm</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <h4>Luas permukaan balok dengan panjang 10 cm, lebar 5 cm, tinggi 8 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/5vG7L9e.png" alt="Luas Permukaan Balok" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer36')">Lihat Jawaban</button>
+                    <div id="answer36" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Luas = 2 × (p×l + p×t + l×t) = 2 × (10×5 + 10×8 + 5×8) = 2 × (50 + 80 + 40) = 2 × 170 = 340 cm²</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <h4>Volume tabung dengan jari-jari 7 cm dan tinggi 10 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/6mGdQfR.png" alt="Volume Tabung" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer37')">Lihat Jawaban</button>
+                    <div id="answer37" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Volume = π × r² × t = 22/7 × 7² × 10 = 22/7 × 49 × 10 = 22 × 7 × 10 = 1540 cm³</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">8</div>
+                        <h4>Banyak diagonal pada segi enam adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/7kHcV9x.png" alt="Diagonal Poligon" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer38')">Lihat Jawaban</button>
+                    <div id="answer38" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Diagonal = n(n-3)/2 = 6(6-3)/2 = 6×3/2 = 9 diagonal</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">9</div>
+                        <h4>Luas juring lingkaran dengan sudut 60° dan jari-jari 14 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/8vQYz9L.png" alt="Luas Juring" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer39')">Lihat Jawaban</button>
+                    <div id="answer39" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Luas juring = (θ/360) × π × r² = (60/360) × 22/7 × 14² = (1/6) × 22/7 × 196 = (1/6) × 22 × 28 = (1/6) × 616 = 102,67 cm²</p>
+                    </div>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question-header">
+                        <div class="question-number">10</div>
+                        <h4>Volume kerucut dengan jari-jari 6 cm dan tinggi 8 cm adalah...</h4>
+                    </div>
+                    <img src="https://i.imgur.com/9bRk1zX.png" alt="Volume Kerucut" class="question-image">
+                    <button class="btn btn-answer" onclick="toggleAnswer('answer40')">Lihat Jawaban</button>
+                    <div id="answer40" class="answer-box">
+                        <h5>Jawaban:</h5>
+                        <p>Volume = 1/3 × π × r² × t = 1/3 × 22/7 × 6² × 8 = 1/3 × 22/7 × 36 × 8 = 1/3 × 22/7 × 288 = 1/3 × 905,14 ≈ 301,71 cm³</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><i class="bi bi-c-circle me-1"></i> 2023 Portal Belajar Matematika | Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk Pendidikan</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleAnswer(id) {
+            const answerBox = document.getElementById(id);
+            answerBox.classList.toggle('show');
+            
+            // Ubah teks tombol
+            const button = answerBox.previousElementSibling;
+            if (answerBox.classList.contains('show')) {
+                button.innerHTML = '<i class="bi bi-eye-slash me-1"></i>Sembunyikan Jawaban';
+            } else {
+                button.innerHTML = '<i class="bi bi-eye me-1"></i>Lihat Jawaban';
+            }
+        }
+        
+        // Animasi saat tab aktif
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.nav-link');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function() {
+                    // Scroll ke atas konten tab
+                    document.querySelector('.tab-content').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
